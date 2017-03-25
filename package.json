@@ -1,0 +1,18 @@
+{
+  "name": "oms-serviceregistry",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "js-yaml": "^3.8.2",
+    "request": "^2.81.0",
+    "restify": "^4.3.0",
+    "restify-plugins": "^1.5.1"
+  }
+}
