@@ -3,10 +3,13 @@ var plugins = require('restify-plugins');
 var yaml = require('js-yaml');
 var fs   = require('fs');
 var fetchModules = require('./fetchModules.js');
+var token = require('./token.js');
+var config = require('./config.json');
 
 // Get document, or throw exception on errors
-var composefile = yaml.safeLoad(fs.readFileSync('/usr/src/docker-compose.yml', 'utf8'));
+var composefile = yaml.safeLoad(fs.readFileSync(config.compose_file, 'utf8'));
 var parsedFile = require('./parseLabels.js')(composefile);
+token.writeTokenFile();
 
 const server = restify.createServer({
   name: 'serviceregistry',
@@ -57,6 +60,9 @@ server.get('/all', function(req, res, next) {
 	});
 	return next();
 });
+
+server.post('/checktoken', token.validateToken);
+server.post('/gettoken', token.createToken);
 
 server.get('/frontend', function(req, res, next) {
 	fetchModules(parsedFile.modules).then((modules) => {
