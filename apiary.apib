@@ -56,7 +56,7 @@ Returns all services that serve that category, ordered by the priority in those 
             ]
         }
 
-## Security Tokens [/token]
+## Security Tokens [/gettoken]
 
 ### Receive a new token [POST]
 
@@ -78,17 +78,19 @@ Generates a token for a microservice instance. The only proof of authenticy is t
                 "expires": "2018-03-09T10:28:57+00:00"
             }
         }
+        
+## Security Tokens [/checktoken]
 
-### Check the validity of a token [GET]
+### Check the validity of a token [POST]
 
-Checks the validity of a token
+Checks the validity of a token, the token to check is passed by the querystring parameter key
 
 + Request (application/json)
 
         {
-            "instance_key": "<some blibberish>",
+            "instance_key": "<some blibberish>"
         }
-        
+
 + Response 200 (application/json)
 
         {
