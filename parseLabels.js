@@ -95,6 +95,7 @@ module.exports = function(data) {
 	var services = {};
 	var categories = {};
 	var modules = [];
+	var attachements = [];
 
 	// Read the label data into an object
 	for(var service in data.services) {

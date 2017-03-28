@@ -4,8 +4,8 @@ const crypto = require('crypto');
 const restify = require('restify');
 
 
+// TODO persist those two
 const api_key = (new Buffer(crypto.randomBytes(256)).toString('base64'));
-
 var token = [];
 
 exports.validateToken = function(req, res, next) {
