@@ -6,15 +6,27 @@ var fetchModules = require('./fetchModules.js');
 var token = require('./token.js');
 var config = require('./config.json');
 var mongoose = require('mongoose');
+var dirtyhack = require('./dirtyhack.js');
+
 
 // Connect to db
 mongoose.Promise = global.Promise;
 mongoose.connect(config.db);
 
-// Get document, or throw exception on errors
+// Get document, or throw exception on error
 var composefile = yaml.safeLoad(fs.readFileSync(config.compose_file, 'utf8'));
 var parsedFile = require('./parseLabels.js')(composefile);
-
+try{
+	setTimeout(() => {dirtyhack.registerStuff(parsedFile);}, 10);
+	setTimeout(() => {dirtyhack.registerStuff(parsedFile);}, 10000);
+	setTimeout(() => {dirtyhack.registerStuff(parsedFile);}, 20000);
+	setTimeout(() => {dirtyhack.registerStuff(parsedFile);}, 30000);
+	setTimeout(() => {dirtyhack.registerStuff(parsedFile);}, 40000);
+	setTimeout(() => {dirtyhack.registerStuff(parsedFile);}, 50000);
+	setTimeout(() => {dirtyhack.registerStuff(parsedFile);}, 60000);
+}catch(err){
+	console.log("Could not apply hack", err);
+}
 const server = restify.createServer({
   name: 'serviceregistry',
   version: '1.0.0'

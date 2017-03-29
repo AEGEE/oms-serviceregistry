@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const config = require('./config.json');
 const crypto = require('crypto');
 const fs = require('fs');
+const dirtyhack = require('./dirtyhack.js');
 
 const storageSchema = mongoose.Schema({
   instance: String,
@@ -100,11 +101,16 @@ exports.createToken = function(name, api_key, callback) {
       name: name
     });
 
-    token.save((err) => {
-      if(err)
-        return callback(err, null);
+    // TODO remove next 2 lines
+    dirtyhack.getToken((err, core_token) => {
+      token.x_api_key = core_token.core_api_key;
 
-      return callback(null, token);
+      token.save((err) => {
+        if(err)
+          return callback(err, null);
+
+        return callback(null, token);
+      });
     });
   });
 }
