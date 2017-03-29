@@ -1,61 +1,47 @@
-const fs = require('fs');
-const config = require('./config.json');
-const crypto = require('crypto');
 const restify = require('restify');
-
-
-// TODO persist those two
-const api_key = (new Buffer(crypto.randomBytes(256)).toString('base64'));
-var token = [];
+const storage = require('./tokenStorage.js');
 
 exports.validateToken = function(req, res, next) {
-	var found = token.find((item) => {
-		return item.expires > (new Date()) && item.instance_key == req.body.instance_key;
-	});
-
-	var valid = found === undefined;
-
-	res.json({
-		success: true,
-		data: {
-			valid: valid,
-			expires: found.expires,
-			name: found.name
+	storage.validateToken(req.body.x_api_key, (err, found) => {
+		if(err) {
+			console.log("Could not fetch token from db", err);
+			res.json({
+				success: false,
+				message: err.message
+			});
+			return next();
 		}
+
+		found = found.toObject();
+		delete found._id;
+		delete found.__v;
+		delete found.id;
+		res.json({
+			success: true,
+			data: found
+		});
+		return next();
 	});
-
-
-	return next();
 };
 
 exports.createToken = function(req, res, next) {
-	if(req.body.api_key != api_key) {
-		return next(new restify.ForbiddenError({body:{
-			success: false,
-			message: "Wrong api key provided"
-		}}));
-	}
+	storage.createToken(req.body.name, req.body.api_key, (err, token) => {
+		if(err) {
+			res.json({
+				success: false,
+				message: err.message
+			});
+			return next();
+		}
 
-	var expires = new Date();
-	expires.setDate(expires.getDate() + 1);
-	var newtoken = {
-		instance_key: (new Buffer(crypto.randomBytes(64)).toString('base64')),
-		expires: expires,
-		name: req.body.name
-	};
-
-	// "save" token
-	token.push(newtoken);
-
-	res.json({
-		success: true,
-		data: newtoken
-	});
-	return next();
-};
-
-exports.writeTokenFile = function() {
-	fs.writeFile(config.api_key, api_key, (err) => {
-		if (err) throw err;
+		token = token.toObject();
+		delete token._id;
+		delete token.__v;
+		delete token.id;
+		res.json({
+			success: true,
+			data: token
+		});
+		return next();
 	});
 };

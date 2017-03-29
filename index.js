@@ -5,11 +5,15 @@ var fs   = require('fs');
 var fetchModules = require('./fetchModules.js');
 var token = require('./token.js');
 var config = require('./config.json');
+var mongoose = require('mongoose');
+
+// Connect to db
+mongoose.Promise = global.Promise;
+mongoose.connect(config.db);
 
 // Get document, or throw exception on errors
 var composefile = yaml.safeLoad(fs.readFileSync(config.compose_file, 'utf8'));
 var parsedFile = require('./parseLabels.js')(composefile);
-token.writeTokenFile();
 
 const server = restify.createServer({
   name: 'serviceregistry',
