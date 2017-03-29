@@ -21,7 +21,7 @@ Storage = mongoose.model('Storage', storageSchema);
 
 const tokenSchema = mongoose.Schema({
   created: {type: Date, default: Date.now(), expires: 86400}, // 1d
-  x_api_key: {type: String, required: true, unique: true, index: true},
+  x_api_key: {type: String, required: true, index: true}, // TODO add unique: true (dirtyhack) 
   name: String
 }, {
   toObject: {virtuals: true},

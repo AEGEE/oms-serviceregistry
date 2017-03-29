@@ -1,17 +1,19 @@
+var config = require('./config.json');
+var mongoose = require('mongoose');
+// Connect to db as the first thing, to avoid that annoying promise warning
+mongoose.Promise = global.Promise;
+mongoose.connect(config.db);
+
 var restify = require('restify');
 var plugins = require('restify-plugins');
 var yaml = require('js-yaml');
 var fs   = require('fs');
 var fetchModules = require('./fetchModules.js');
 var token = require('./token.js');
-var config = require('./config.json');
-var mongoose = require('mongoose');
 var dirtyhack = require('./dirtyhack.js');
 
 
-// Connect to db
-mongoose.Promise = global.Promise;
-mongoose.connect(config.db);
+
 
 // Get document, or throw exception on error
 var composefile = yaml.safeLoad(fs.readFileSync(config.compose_file, 'utf8'));
