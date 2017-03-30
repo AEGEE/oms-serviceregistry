@@ -25,7 +25,8 @@ var registerStuff = function(parsedFile) {
       // Add dummy module in case no module is there
       modules.push({
         url: "Get your shit going core!",
-        servicename: "Really, this is bullshit!",
+        name: "Really, this is bullshit!",
+        code: "abcdefghijklmnop",
         pages: [],
         pages_url: ''
       });
@@ -34,8 +35,8 @@ var registerStuff = function(parsedFile) {
       modules.forEach((item) => {
         // Call the request to the core
         const data = {
-          name: item.servicename,
-          code: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5), // random string. fuck you.
+          name: item.name,
+          code: item.code,
           base_url: item.url,
           pages: JSON.stringify(item.pages),
         };

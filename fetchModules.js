@@ -17,18 +17,16 @@ module.exports = function(modules) {
 					}
 					else {
 						try {
-							modules[i].pages = JSON.parse(body);
+							body = JSON.parse(body);
 						} catch(err) {
 							console.log("Could not fetch frontend pages for " + modules[i].servicename, err);
 							console.log(body);
 							modules[i].pages = [];
 							modules[i].error = err;
 						}
-						if(!Array.isArray(modules[i].pages)) {
-							console.log("Response from service was no array");
-							modules[i].pages = [];
-							modules[i].error = "Response from service was no array";
-						}
+						modules[i].pages = body.pages;
+						modules[i].name = body.name;
+						modules[i].code = body.code;
 					}
 
 					counter--;
