@@ -15,7 +15,7 @@ hackSchema = mongoose.Schema({
 
 Hack = mongoose.model('Hack', hackSchema);
 
-exports.registerStuff = function(parsedFile) {
+var registerStuff = function(parsedFile) {
   Hack.findOne().exec((err, res) => {
     if(err || res)
       return;
@@ -26,7 +26,8 @@ exports.registerStuff = function(parsedFile) {
       modules.push({
         url: "Get your shit going core!",
         servicename: "Really, this is bullshit!",
-        pages: []
+        pages: [],
+        pages_url: ''
       });
       var secret = fs.readFileSync('/usr/src/shared/api-key', 'utf8');
       var api_key;
@@ -50,8 +51,10 @@ exports.registerStuff = function(parsedFile) {
           },
           form: data,
         }, function(err, res, body) {
-          if(err)
+          if(err) {
             console.log("Fock", err);
+            return;
+          }
           body = JSON.parse(body);
           console.log(body);
           if(!api_key) {
@@ -64,10 +67,27 @@ exports.registerStuff = function(parsedFile) {
           }
         });
       });
+    }).catch((err) => {
+      console.log("Could not fetch modules", err);
+      return;
     });
   });
 }
 
+exports.registerStuff = function(parsedFile) {
+  var readToken = function(parsedFile) {
+    fs.readFile('/usr/scripts/strapstate/omsevents', (err, res) => {
+        if(err) {
+          setTimeout(readToken, 1000, parsedFile);
+          console.log("Bootstrapping not yet finished");
+        }
+        else
+          registerStuff(parsedFile);
+    });
+  }
+
+  readToken(parsedFile);
+}
 exports.getToken = function(callback) {
   Hack.findOne().exec((err, res) => {
     callback(err, res);

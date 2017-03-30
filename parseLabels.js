@@ -140,8 +140,8 @@ module.exports = function(data) {
 				module = parseModules(item);
 			});
 
-			tmp.backend_url = 'http://' + service + ':' + tmp.port + tmp.backend + '/';
-			tmp.frontend_url = 'http://' + tmp.frontend + '/';
+			tmp.backend_url = 'http://' + service + ':' + tmp.port + tmp.backend;
+			tmp.frontend_url = 'http://' + tmp.frontend;
 			services[service] = tmp;
 
 			if(module) {
