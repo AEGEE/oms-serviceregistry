@@ -56,7 +56,11 @@ var registerStuff = function(parsedFile) {
             console.log("Fock", err);
             return;
           }
-          body = JSON.parse(body);
+          try {
+            body = JSON.parse(body);
+          } catch(err) {
+            console.log("Could not parse core response", err);
+          }
           console.log(body);
           if(!api_key) {
             api_key = body.handshake_token;
