@@ -18,9 +18,16 @@ var dirtyhack = require('./dirtyhack.js');
 // Get document, or throw exception on error
 var composefile = yaml.safeLoad(fs.readFileSync(config.compose_file, 'utf8'));
 var parsedFile = require('./parseLabels.js')(composefile);
+require('./fetchModules.js')(parsedFile.modules).then((modules) => {
+	parsedFile.modules = modules;
+	console.log("Registry running with configuration: ");
+	console.log(parsedFile);
+}).catch((err) => {
+  console.log("Could not fetch modules", err);
+  return;
+});
 
-console.log("Registry running with configuration: ");
-console.log(parsedFile);
+
 
 const server = restify.createServer({
   name: 'serviceregistry',

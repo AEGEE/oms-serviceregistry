@@ -43,7 +43,7 @@ var registerStuff = function(parsedFile) {
 
         console.log("Registering " + item.servicename);
         request({
-          url: `http://omscore-nginx/api/registerMicroservice`,
+          url: `http://omscore-nginx/api/microservice/register`,
           method: 'POST',
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
@@ -68,11 +68,11 @@ var registerStuff = function(parsedFile) {
           }
         });
       });
-    }).catch((err) => {
-      console.log("Could not fetch modules", err);
-      return;
-    });
   });
+}).catch((err) => {
+  console.log("Could not fetch modules", err);
+  return;
+});
 }
 
 exports.registerStuff = function(parsedFile) {
