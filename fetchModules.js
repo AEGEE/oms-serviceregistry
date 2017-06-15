@@ -9,9 +9,11 @@ module.exports = function(modules) {
 		var counter = modules.length;
 		modules.forEach((module, i) => {
 			if(module.pages_url) {
+				console.log("Querying module");
+				console.log(module);
 				request(module.pages_url, (err, res, body) => {
 					if(err) {
-						console.log(err);
+						console.log("Could not fetch module " + module.servicename, err);
 						modules[i].pages = [];
 						modules[i].error = err;
 					}

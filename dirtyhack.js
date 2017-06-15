@@ -77,7 +77,7 @@ var registerStuff = function(parsedFile) {
 
 exports.registerStuff = function(parsedFile) {
   var readToken = function(parsedFile) {
-    fs.readFile('/usr/scripts/strapstate/omsevents', (err, res) => {
+    fs.readFile('/usr/src/shared/strapstate/omscore', (err, res) => {
         if(err) {
           setTimeout(readToken, 1000, parsedFile);
           console.log("Bootstrapping not yet finished");

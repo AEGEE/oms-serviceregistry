@@ -19,6 +19,9 @@ var dirtyhack = require('./dirtyhack.js');
 var composefile = yaml.safeLoad(fs.readFileSync(config.compose_file, 'utf8'));
 var parsedFile = require('./parseLabels.js')(composefile);
 
+console.log("Registry running with configuration: ");
+console.log(parsedFile);
+
 const server = restify.createServer({
   name: 'serviceregistry',
   version: '1.0.0'
