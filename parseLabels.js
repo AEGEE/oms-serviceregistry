@@ -8,16 +8,12 @@ const parseFrontend = (line) => {
 			path: ''
 		};
 		rules.forEach((item) => {
-			var host = item.match(/^Host:(.*)/);
-			if(host)
-				tmp.host = host[1];
-
 			var path = item.match(/^PathPrefix:(.*)/);
 			if(path)
 				tmp.path = path[1] + '';
 		});
 
-		var retval = tmp.host + tmp.path;
+		var retval = tmp.path;
 		return retval;
 	}
 
@@ -141,7 +137,7 @@ module.exports = function(data) {
 			});
 
 			tmp.backend_url = 'http://' + service + ':' + tmp.port + tmp.backend;
-			tmp.frontend_url = 'http://' + tmp.frontend;
+			tmp.frontend_url = tmp.frontend;
 			services[service] = tmp;
 
 			if(module) {
