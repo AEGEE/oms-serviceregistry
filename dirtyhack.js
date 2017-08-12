@@ -31,6 +31,7 @@ var registerStuff = function(parsedFile) {
         pages_url: ''
       });
       var secret = fs.readFileSync('/usr/src/shared/api-key', 'utf8');
+      console.log("Using secret: " + secret);
       var api_key;
       modules.forEach((item) => {
         // Call the request to the core
@@ -56,13 +57,15 @@ var registerStuff = function(parsedFile) {
             console.log("Fock", err);
             return;
           }
+          var parsed = false;
           try {
             body = JSON.parse(body);
+            parsed = true;
           } catch(err) {
             console.log("Could not parse core response", err);
           }
           console.log(body);
-          if(!api_key) {
+          if(!api_key && parsed) {
             api_key = body.handshake_token;
             console.log("Pirated api-key: " + api_key);
             h = new Hack({

@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+    omsserviceregistry:
+        image: aegee/omsserviceregistry:dev
+        ports:
+            - "7000:7000"
+        volumes:
+            - ./oms-serviceregistry/docker/docker-compose-old.yml:/usr/src/docker-compose.yml:ro
+            - ./oms-serviceregistry:/usr/src/app
+            - shared:/usr/src/shared
+        links:
+            - mongodb
+
+    mongodb:
+        image: mongo:latest
+        expose:
+            - "27017"
+        volumes:
+            - mongodb:/data/db
+
+volumes:
+    mongodb:
+        driver: "local"
+    shared:
+        driver: "local"
