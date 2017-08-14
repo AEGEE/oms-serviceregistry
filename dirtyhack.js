@@ -28,7 +28,8 @@ var registerStuff = function(parsedFile) {
         name: "Really, this is bullshit!",
         code: "abcdefghijklmnop",
         pages: [],
-        pages_url: ''
+        pages_url: '',
+        servicename: 'dummy-service'
       });
       var secret = fs.readFileSync('/usr/src/shared/api-key', 'utf8');
       console.log("Using secret: " + secret);

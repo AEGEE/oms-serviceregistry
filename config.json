@@ -2,5 +2,6 @@
 	"compose_file": "/usr/src/docker-compose.yml",
 	"api_key": "/usr/src/shared/new-api-key",
   "db": "mongodb://mongodb:27017/serviceregistry",
-  "instance": "bigmama"
+  "instance": "bigmama",
+  "docker": "/var/run/docker.sock"
 }

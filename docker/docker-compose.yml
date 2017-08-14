@@ -6,8 +6,8 @@ services:
         ports:
             - "7000:7000"
         volumes:
-            - ./oms-serviceregistry/docker/docker-compose-old.yml:/usr/src/docker-compose.yml:ro
             - ./oms-serviceregistry:/usr/src/app
+            - /var/run/docker.sock:/var/run/docker.sock:ro
             - shared:/usr/src/shared
         links:
             - mongodb
