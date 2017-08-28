@@ -39,3 +39,8 @@ volumes:
         driver: "local"
     shared:
         driver: "local"
+
+networks:
+  default:
+    external:
+      name: OMS
