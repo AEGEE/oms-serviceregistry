@@ -37,18 +37,20 @@ var registerStuff = function(parsedFile) {
       modules.forEach((item) => {
         // Call the request to the core
         const data = {
-          username: 'admin@aegee.org',
-          password: '1234',
+          name: item.name,
+          code: item.code,
+          base_url: item.url,
+          pages: JSON.stringify(item.pages),
         };
 
         console.log("Registering " + item.servicename);
         request({
-          url: `http://omscore-nginx/api/login`,
+          url: `http://omscore-nginx/api/microservice/register`,
           method: 'POST',
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
+            'X-Api-Key': secret,
             'Content-Type': 'application/x-www-form-urlencoded',
-            'User-Agent': 'This was null otherwise',
           },
           form: data,
         }, function(err, res, body) {
@@ -65,7 +67,7 @@ var registerStuff = function(parsedFile) {
           }
           console.log(body);
           if(!api_key && parsed) {
-            api_key = body.data;
+            api_key = body.handshake_token;
             console.log("Pirated api-key: " + api_key);
             h = new Hack({
               core_api_key: api_key
