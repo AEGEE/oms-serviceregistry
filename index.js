@@ -109,5 +109,3 @@ require('./parseLabelsDocker.js')(config.docker, (parsedFile) => {
 		});
 	}, 10000);
 });
-
-
