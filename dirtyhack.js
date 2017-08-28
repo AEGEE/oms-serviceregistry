@@ -20,7 +20,7 @@ var registerStuff = function(parsedFile) {
     if(err || res)
       return;
     console.log("Registering all the frontend pages for all modules");
-    // We have to query the core :/ 
+    // We have to query the core :/
     fetchModules(parsedFile.modules).then((modules) => {
       // Add dummy module in case no module is there
       modules.push({
@@ -37,20 +37,18 @@ var registerStuff = function(parsedFile) {
       modules.forEach((item) => {
         // Call the request to the core
         const data = {
-          name: item.name,
-          code: item.code,
-          base_url: item.url,
-          pages: JSON.stringify(item.pages),
+          username: 'admin@aegee.org',
+          password: '1234',
         };
 
         console.log("Registering " + item.servicename);
         request({
-          url: `http://omscore-nginx/api/microservice/register`,
+          url: `http://omscore-nginx/api/login`,
           method: 'POST',
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
-            'X-Api-Key': secret,
             'Content-Type': 'application/x-www-form-urlencoded',
+            'User-Agent': 'This was null otherwise',
           },
           form: data,
         }, function(err, res, body) {
@@ -67,7 +65,7 @@ var registerStuff = function(parsedFile) {
           }
           console.log(body);
           if(!api_key && parsed) {
-            api_key = body.handshake_token;
+            api_key = body.data;
             console.log("Pirated api-key: " + api_key);
             h = new Hack({
               core_api_key: api_key
