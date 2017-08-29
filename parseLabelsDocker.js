@@ -52,7 +52,8 @@ module.exports = function(docker_path, callback) {
 				backend: '',
 				port: 80,
 				description: '',
-				enabled: false
+				enabled: false,
+				status_url: '/status'
 			};
 			var service_modules = undefined;
 
@@ -73,24 +74,18 @@ module.exports = function(docker_path, callback) {
 				tmp.categories = parseCategories(container.Labels['registry.categories']);
 			if(container.Labels['registry.backend'])
 				tmp.backend = container.Labels['registry.backend']
+			tmp.backend_url = 'http://' + service + ':' + tmp.port + tmp.backend;
 			if(container.Labels['registry.description'])
 				tmp.description = container.Labels['registry.description'];
 			if(container.Labels['registry.modules'])
-				service_modules = container.Labels['registry.modules'];
+				tmp.modules_url = tmp.backend_url + container.Labels['registry.modules'];
+			if(container.Labels['registry.status'])
+				tmp.status_url = container.Labels['registry.status'];
 
-			tmp.backend_url = 'http://' + service + ':' + tmp.port + tmp.backend;
 			tmp.frontend_url = tmp.frontend;
 
 			services[service] = tmp;
 
-			// Parse the modules into a seperate array
-			if(service_modules) {
-				modules.push({
-					pages_url: tmp.backend_url + service_modules,
-					url: tmp.frontend_url,
-					servicename: tmp.name
-				});
-			}
 
 			// Parse the categories into a seperate array
 			tmp.categories.forEach((item) => {
