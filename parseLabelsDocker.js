@@ -67,22 +67,18 @@ module.exports = function(docker_path, callback) {
 			if(container.Labels['registry.port'])
 				tmp.port = parseInt(container.Labels['registry.port']);
 			if(container.Labels['registry.frontend'])
-				tmp.frontend = container.Labels['registry.frontend'];
+				tmp.frontend_url = container.Labels['registry.frontend'];
 			if(container.Labels['registry.enable'])
 				tmp.enabled = container.Labels['registry.enable'] == 'true';
 			if(container.Labels['registry.categories'])
 				tmp.categories = parseCategories(container.Labels['registry.categories']);
-			if(container.Labels['registry.backend'])
-				tmp.backend = container.Labels['registry.backend']
-			tmp.backend_url = 'http://' + service + ':' + tmp.port + tmp.backend;
+			tmp.backend_url = 'http://' + service + ':' + tmp.port;
 			if(container.Labels['registry.description'])
 				tmp.description = container.Labels['registry.description'];
 			if(container.Labels['registry.modules'])
 				tmp.modules_url = tmp.backend_url + container.Labels['registry.modules'];
 			if(container.Labels['registry.status'])
 				tmp.status_url = tmp.backend_url + container.Labels['registry.status'];
-
-			tmp.frontend_url = tmp.frontend;
 
 			services.push(tmp);
 
@@ -96,8 +92,8 @@ module.exports = function(docker_path, callback) {
 					name: tmp.name,
 					enabled: tmp.enabled,
 					description: tmp.description,
-					backend: tmp.backend,
-					frontend: tmp.frontend,
+					backend: tmp.backend_url,
+					frontend: tmp.frontend_url,
 					priority: parseInt(item.priority)
 				});
 			});

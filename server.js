@@ -26,8 +26,8 @@ module.exports = function(parsedFile) {
         return next();
       });
 
-      server.get('/service/:name', function (req, res, next) {
-        var service = parsedFile.services[req.params.name];
+      server.get('/services/:name', function (req, res, next) {
+        var service = parsedFile.services.find((item) => {return item.name == req.params.name;});
         if(service) {
           res.json({
             success: true,
@@ -43,12 +43,19 @@ module.exports = function(parsedFile) {
       });
 
       server.get('/categories', function(req, res, next) {
+        var categories = [];
+
+        for(var key in parsedFile.categories) {
+          if(parsedFile.categories.hasOwnProperty(key))
+            categories.push(key);
+        }
+
         res.json({
           success: true,
-          data: parsedFile.categories
+          data: categories
         });
         return next;
-      })
+      });
 
       server.get('/categories/:name', function(req, res, next) {
         var cat = parsedFile.categories[req.params.name];
@@ -68,7 +75,7 @@ module.exports = function(parsedFile) {
       server.get('/frontends', function(req, res, next) {
         res.json({
           success: true,
-          data: modules
+          data: parsedFile.modules
         });
         return next();
       });

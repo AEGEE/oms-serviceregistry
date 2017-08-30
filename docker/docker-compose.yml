@@ -23,6 +23,8 @@ services:
               target: /usr/src/shared
         links:
             - mongodb
+        labels:
+            - "registry.port=7000"
 
     mongodb:
         image: mongo:latest
