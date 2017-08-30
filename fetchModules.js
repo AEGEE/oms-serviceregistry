@@ -3,7 +3,7 @@ var config = require('./config.json');
 var register_page = require('./hack.js');
 
 module.exports = function(parsedFile, service, index) {
-	if(config.verbose_log)
+	if(config.log_verbose)
 		console.log("Querying " + service.name + " on " + service.modules_url);
 
 	request(service.modules_url, (err, res, body) => {
@@ -16,7 +16,7 @@ module.exports = function(parsedFile, service, index) {
 			body = JSON.parse(body);
 		} catch(err) {
 			console.error("Could not parse modules response from " + service.name, err);
-			if(config.verbose_log) {
+			if(config.log_verbose) {
 				console.log("------------------------------- Faulty response from " + service.name + " -----------------------------");
 				console.log(body);
 			}

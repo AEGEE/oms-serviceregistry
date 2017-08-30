@@ -12,6 +12,7 @@
   "dependencies": {
     "dockerode": "^2.5.0",
     "request": "^2.81.0",
-    "restify": "^4.3.0"
+    "restify": "^4.3.0",
+    "restify-plugins": "^1.5.1"
   }
 }

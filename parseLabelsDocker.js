@@ -35,7 +35,7 @@ const parseCategories = (line) => {
 module.exports = function(docker_path, callback) {
 	var docker = new Docker({socketPath: docker_path});
 
-	var services = {};
+	var services = [];
 	var categories = {};
 	var modules = [];
 
@@ -53,7 +53,7 @@ module.exports = function(docker_path, callback) {
 				port: 80,
 				description: '',
 				enabled: false,
-				status_url: '/status'
+				status_url: ''
 			};
 			var service_modules = undefined;
 
@@ -80,11 +80,11 @@ module.exports = function(docker_path, callback) {
 			if(container.Labels['registry.modules'])
 				tmp.modules_url = tmp.backend_url + container.Labels['registry.modules'];
 			if(container.Labels['registry.status'])
-				tmp.status_url = container.Labels['registry.status'];
+				tmp.status_url = tmp.backend_url + container.Labels['registry.status'];
 
 			tmp.frontend_url = tmp.frontend;
 
-			services[service] = tmp;
+			services.push(tmp);
 
 
 			// Parse the categories into a seperate array

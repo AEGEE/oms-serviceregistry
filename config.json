@@ -1,6 +1,6 @@
 {
   "docker": "/var/run/docker.sock",
-  "log_verbose": true,
+  "log_verbose": false,
   "ping_retries": 120,
   "hack": {
     "core_url": "http://omscore-nginx",
