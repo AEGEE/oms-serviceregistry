@@ -5,6 +5,15 @@ sudo: required
 services:
   - docker
 
+before_script:
+  - cd test
+  - sudo docker network create OMS
+  - sudo sh test.sh pull
+  - sudo sh test.sh build
+  - sudo sh test.sh run testrunner npm install
+  - sudo sh test.sh up -d
+  - sleep 20 # give some time for the registry to query other services
+
 script:
-    - sh run_tests.sh
+    - sudo sh test.sh up testrunner
 
