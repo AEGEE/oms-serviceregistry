@@ -21,24 +21,10 @@ services:
             - type: volume
               source: shared
               target: /usr/src/shared
-        links:
-            - mongodb
         labels:
             - "registry.port=7000"
 
-    mongodb:
-        image: mongo:latest
-        expose:
-            - "27017"
-        volumes:
-            - type: volume
-              source: mongodb
-              target: /data/db
-
-
 volumes:
-    mongodb:
-        driver: "local"
     shared:
         driver: "local"
 
