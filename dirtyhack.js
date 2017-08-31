@@ -20,7 +20,7 @@ var registerStuff = function(parsedFile) {
     if(err || res)
       return;
     console.log("Registering all the frontend pages for all modules");
-    // We have to query the core :/ 
+    // We have to query the core :/
     fetchModules(parsedFile.modules).then((modules) => {
       // Add dummy module in case no module is there
       modules.push({

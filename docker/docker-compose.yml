@@ -1,14 +1,26 @@
-version: '2'
+version: '3.2'
 
 services:
+
+### OMS SERVICE REGISTRY        #######################################
     omsserviceregistry:
+        build:
+            context: ./$PATH_OMS_REGISTRY/omsserviceregistry/
+            dockerfile: ./Dockerfile.dev
         image: aegee/omsserviceregistry:dev
         ports:
             - "7000:7000"
         volumes:
-            - ./oms-serviceregistry:/usr/src/app
-            - /var/run/docker.sock:/var/run/docker.sock:ro
-            - shared:/usr/src/shared
+            - type: bind
+              source: ./$PATH_OMS_REGISTRY/../
+              target: /usr/src/app
+            - type: bind
+              source: /var/run/docker.sock
+              target: /var/run/docker.sock
+              read_only: true
+            - type: volume
+              source: shared
+              target: /usr/src/shared
         links:
             - mongodb
 
@@ -17,10 +29,18 @@ services:
         expose:
             - "27017"
         volumes:
-            - mongodb:/data/db
+            - type: volume
+              source: mongodb
+              target: /data/db
+
 
 volumes:
     mongodb:
         driver: "local"
     shared:
         driver: "local"
+
+networks:
+  default:
+    external:
+      name: OMS
