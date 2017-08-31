@@ -31,6 +31,8 @@ module.exports = function(parsedFile, service, index) {
 		};
 		parsedFile.modules.push(module);
 
+		service.modules = module;
+
 		// TODO remove as soon as hack is unnecessary
 		register_page(module, service);
 	});

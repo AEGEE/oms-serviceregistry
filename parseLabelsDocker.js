@@ -72,7 +72,7 @@ module.exports = function(docker_path, callback) {
 				tmp.enabled = container.Labels['registry.enable'] == 'true';
 			if(container.Labels['registry.categories'])
 				tmp.categories = parseCategories(container.Labels['registry.categories']);
-			tmp.backend_url = 'http://' + service + ':' + tmp.port;
+			tmp.backend_url = 'http://' + service + ':' + tmp.port + '/';
 			if(container.Labels['registry.description'])
 				tmp.description = container.Labels['registry.description'];
 			if(container.Labels['registry.modules'])
