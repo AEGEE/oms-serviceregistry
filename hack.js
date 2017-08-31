@@ -50,6 +50,13 @@ module.exports = function(module, service) {
           return error_callback();
         }
 
+        if(!parsed_body.handshake_token) {
+          if(config.log_verbose)
+            console.log("Core did not send a handshake token", parsed_body)
+          return error_callback();
+        }
+
+        console.log("Successfully registered " + service.name + " to the core");
         if(config.log_verbose)
           console.log("Handshake token: " + parsed_body.handshake_token);
         return success_callback();

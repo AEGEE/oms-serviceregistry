@@ -60,7 +60,7 @@ module.exports = function(docker_path, callback) {
 			if(container.Labels['traefik.port'])
 				tmp.port = parseInt(container.Labels['traefik.port']);
 			if(container.Labels['traefik.frontend.rule'])
-				tmp.frontend = parseFrontend(container.Labels['traefik.frontend.rule']);
+				tmp.frontend_url = parseFrontend(container.Labels['traefik.frontend.rule']);
 			if(container.Labels['traefik.enable'])
 				tmp.enabled = container.Labels['traefik.enable'] == 'true';
 			// registry entries overwrite previous values
