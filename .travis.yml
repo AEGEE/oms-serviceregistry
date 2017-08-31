@@ -5,8 +5,10 @@ sudo: required
 services:
   - docker
 
-before_script:
+before_install:
     - cd test
+
+before_script:
     - sudo docker network create OMS
     - sudo sh test.sh pull
     - sudo sh test.sh build
