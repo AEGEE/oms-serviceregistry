@@ -13,30 +13,18 @@ services:
         volumes:
             - type: bind
               source: ./$PATH_OMS_REGISTRY/../
-              target: /usr/src/app
+              target: /usr/app/src
             - type: bind
               source: /var/run/docker.sock
               target: /var/run/docker.sock
               read_only: true
             - type: volume
               source: shared
-              target: /usr/src/shared
-        links:
-            - mongodb
-
-    mongodb:
-        image: mongo:latest
-        expose:
-            - "27017"
-        volumes:
-            - type: volume
-              source: mongodb
-              target: /data/db
-
+              target: /usr/app/shared
+        labels:
+            - "registry.port=7000"
 
 volumes:
-    mongodb:
-        driver: "local"
     shared:
         driver: "local"
 

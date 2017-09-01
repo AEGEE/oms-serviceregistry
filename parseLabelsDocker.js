@@ -35,7 +35,7 @@ const parseCategories = (line) => {
 module.exports = function(docker_path, callback) {
 	var docker = new Docker({socketPath: docker_path});
 
-	var services = {};
+	var services = [];
 	var categories = {};
 	var modules = [];
 
@@ -52,45 +52,36 @@ module.exports = function(docker_path, callback) {
 				backend: '',
 				port: 80,
 				description: '',
-				enabled: false
+				enabled: false,
+				status_url: ''
 			};
 			var service_modules = undefined;
 
 			if(container.Labels['traefik.port'])
 				tmp.port = parseInt(container.Labels['traefik.port']);
 			if(container.Labels['traefik.frontend.rule'])
-				tmp.frontend = parseFrontend(container.Labels['traefik.frontend.rule']);
+				tmp.frontend_url = parseFrontend(container.Labels['traefik.frontend.rule']);
 			if(container.Labels['traefik.enable'])
 				tmp.enabled = container.Labels['traefik.enable'] == 'true';
 			// registry entries overwrite previous values
 			if(container.Labels['registry.port'])
 				tmp.port = parseInt(container.Labels['registry.port']);
 			if(container.Labels['registry.frontend'])
-				tmp.frontend = container.Labels['registry.frontend'];
+				tmp.frontend_url = container.Labels['registry.frontend'];
 			if(container.Labels['registry.enable'])
 				tmp.enabled = container.Labels['registry.enable'] == 'true';
 			if(container.Labels['registry.categories'])
 				tmp.categories = parseCategories(container.Labels['registry.categories']);
-			if(container.Labels['registry.backend'])
-				tmp.backend = container.Labels['registry.backend']
+			tmp.backend_url = 'http://' + service + ':' + tmp.port + '/';
 			if(container.Labels['registry.description'])
 				tmp.description = container.Labels['registry.description'];
 			if(container.Labels['registry.modules'])
-				service_modules = container.Labels['registry.modules'];
+				tmp.modules_url = tmp.backend_url + container.Labels['registry.modules'];
+			if(container.Labels['registry.status'])
+				tmp.status_url = tmp.backend_url + container.Labels['registry.status'];
 
-			tmp.backend_url = 'http://' + service + ':' + tmp.port + tmp.backend;
-			tmp.frontend_url = tmp.frontend;
+			services.push(tmp);
 
-			services[service] = tmp;
-
-			// Parse the modules into a seperate array
-			if(service_modules) {
-				modules.push({
-					pages_url: tmp.backend_url + service_modules,
-					url: tmp.frontend_url,
-					servicename: tmp.name
-				});
-			}
 
 			// Parse the categories into a seperate array
 			tmp.categories.forEach((item) => {
@@ -101,8 +92,8 @@ module.exports = function(docker_path, callback) {
 					name: tmp.name,
 					enabled: tmp.enabled,
 					description: tmp.description,
-					backend: tmp.backend,
-					frontend: tmp.frontend,
+					backend: tmp.backend_url,
+					frontend: tmp.frontend_url,
 					priority: parseInt(item.priority)
 				});
 			});

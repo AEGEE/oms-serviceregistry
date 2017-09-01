@@ -1,43 +1,39 @@
 var request = require('request');
+var config = require('./config.json');
+var register_page = require('./hack.js');
 
-module.exports = function(modules) {
-	return new Promise((resolve, reject) => {
+module.exports = function(parsedFile, service, index) {
+	if(config.log_verbose)
+		console.log("Querying " + service.name + " on " + service.modules_url);
 
-		if(modules.length === 0)
-			return resolve([]);
+	request(service.modules_url, (err, res, body) => {
+		if(err) {
+			console.error("Could not fetch modules for " + service.name, err);
+			return;
+		}
 
-		var counter = modules.length;
-		modules.forEach((module, i) => {
-			if(module.pages_url) {
-				console.log("Querying module");
-				console.log(module);
-				request(module.pages_url, (err, res, body) => {
-					if(err) {
-						console.log("Could not fetch module " + module.servicename, err);
-						modules[i].pages = [];
-						modules[i].error = err;
-					}
-					else {
-						try {
-							body = JSON.parse(body);
-						} catch(err) {
-							console.log("Could not fetch frontend pages for " + modules[i].servicename, err);
-							console.log(body);
-							modules[i].pages = [];
-							modules[i].error = err;
-						}
-						modules[i].pages = body.pages;
-						modules[i].name = body.name;
-						modules[i].code = body.code;
-					}
-
-					counter--;
-					if(counter === 0) {
-						return resolve(modules);
-					}
-				});
+		try {
+			body = JSON.parse(body);
+		} catch(err) {
+			console.error("Could not parse modules response from " + service.name, err);
+			if(config.log_verbose) {
+				console.log("------------------------------- Faulty response from " + service.name + " -----------------------------");
+				console.log(body);
 			}
-		});
+			return;
+		}
 
+		module = {
+			pages: body.pages,
+			name: body.name,
+			code: body.code,
+			url: service.frontend_url
+		};
+		parsedFile.modules.push(module);
+
+		service.modules = module;
+
+		// TODO remove as soon as hack is unnecessary
+		register_page(module, service);
 	});
-};
+}
