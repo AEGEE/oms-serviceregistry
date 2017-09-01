@@ -5,7 +5,7 @@ const fs = require('fs');
 module.exports = function(module, service) {
 
   var query_token = function(error_callback, success_callback) {
-    fs.readFile("/usr/src/shared/api-key", 'utf-8', function(err, token) {
+    fs.readFile(config.hack.file, 'utf-8', function(err, token) {
       if(err || !token) {
         if(config.log_verbose)
           console.log("No token read from file");

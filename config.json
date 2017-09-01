@@ -2,9 +2,11 @@
   "docker": "/var/run/docker.sock",
   "log_verbose": false,
   "ping_retries": 120,
+  "ping_delay": 1000,
   "hack": {
     "core_url": "http://omscore-nginx",
     "username": "admin@aegee.org",
-    "password": "1234"
+    "password": "1234",
+    "file": "/usr/app/shared/api-key"
   }
 }

@@ -13,14 +13,14 @@ services:
         volumes:
             - type: bind
               source: ./$PATH_OMS_REGISTRY/../
-              target: /usr/src/app
+              target: /usr/app/src
             - type: bind
               source: /var/run/docker.sock
               target: /var/run/docker.sock
               read_only: true
             - type: volume
               source: shared
-              target: /usr/src/shared
+              target: /usr/app/shared
         labels:
             - "registry.port=7000"
 

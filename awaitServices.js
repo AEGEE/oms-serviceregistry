@@ -25,11 +25,10 @@ module.exports = function(parsedFile) {
         }
 
         if(err || !body.success) {
-        //if(err) {         // TODO also read the success message
           // If we still have retries left, retry fetching a second later
           if(retries_left > 0) {
             retries_left--;
-            setTimeout(query, 1000);
+            setTimeout(query, config.ping_delay);
           }
           else {
             if(config.log_verbose) {

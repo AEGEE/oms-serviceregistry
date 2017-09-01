@@ -4,7 +4,7 @@ services:
     testservice1:
         image: nginx:alpine
         labels:
-            - "traefik.frontend.rule=HostRegexp:{domain:[a-z]+};PathPrefix:/services/test1;PathPrefixStrip:/services/test1"
+            - "traefik.frontend.rule=HostRegexp:{domain:[a-z0-9.]+};PathPrefix:/services/test1;PathPrefixStrip:/services/test1"
             - "traefik.frontend.priority=100"
             - "traefik.port=80"
             - "traefik.enable=true"
@@ -14,7 +14,7 @@ services:
         volumes:
             - ./testcontent:/usr/share/nginx/html:ro
         labels:
-            - "traefik.frontend.rule=HostRegexp:{domain:[a-z]+};PathPrefix:/services/test2;PathPrefixStrip:/services/test2"
+            - "traefik.frontend.rule=HostRegexp:{domain:[a-z0-9.]+};PathPrefix:/services/test2;PathPrefixStrip:/services/test2"
             - "traefik.frontend.priority=100"
             - "traefik.port=80"
             - "traefik.enable=true"

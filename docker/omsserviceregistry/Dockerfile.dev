@@ -1,7 +1,7 @@
 FROM node:8
 
-RUN mkdir -p /usr/src/shared
+RUN mkdir -p /usr/app/shared && mkdir -p /usr/app/src
 
-WORKDIR /usr/src/app
+WORKDIR /usr/app/src
 
-CMD npm install --silent && node /usr/src/app/index.js
+CMD npm install --silent && node /usr/app/src/index.js
