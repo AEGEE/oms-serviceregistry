@@ -3,6 +3,9 @@ var config = require('./config.json');
 var register_page = require('./hack.js');
 
 module.exports = function(parsedFile, service, index) {
+	if(!service.modules_url)
+		return;
+
 	if(config.log_verbose)
 		console.log("Querying " + service.name + " on " + service.modules_url);
 

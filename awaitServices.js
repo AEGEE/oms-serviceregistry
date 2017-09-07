@@ -8,16 +8,18 @@ module.exports = function(parsedFile) {
     if(!item.enabled)
       return;
 
+    if(!item.status_url) {
+      fetch_modules(parsedFile, item, index);
+      return;
+    }
+
     parsedFile.services[index].up = false;
     var retries_left = config.ping_retries;
-    var status_url = item.status_url;
-    if(!status_url)
-      status_url = item.backend_url + '/status';
     if(config.log_verbose)
-      console.log("Querying " + item.name + ' up to ' + retries_left + ' times on ' + status_url);
+      console.log("Querying " + item.name + ' up to ' + retries_left + ' times on ' + item.status_url);
 
     var query = () => {
-      request(status_url, (err, res, body) => {
+      request(item.status_url, (err, res, body) => {
         try {
           body = JSON.parse(body);
         } catch(_err) {

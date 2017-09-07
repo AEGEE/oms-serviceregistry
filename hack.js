@@ -131,15 +131,15 @@ module.exports = function(module, service) {
     });
   };
 
-  var retries = 50;
+  var retries = config.hack.retries;
   var rescue = function() {
     if(retries > 0) {
       retries--;
       // Try both with login and token to register the microservice to the core
       if(retries%2)
-        setTimeout(query_token, 1000, rescue, () => {});
+        setTimeout(query_token, config.hack.retry_delay, rescue, () => {});
       else
-        setTimeout(query_login, 1000, rescue, () => {});
+        setTimeout(query_login, config.hack.retry_delay, rescue, () => {});
     } else {
       console.error("Could not register " + service.name + " to the core");
     }
