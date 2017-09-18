@@ -30,7 +30,8 @@ module.exports = function(parsedFile, service, index) {
 			pages: body.pages,
 			name: body.name,
 			code: body.code,
-			url: service.frontend_url
+			url: service.frontend_url,
+			servicename: service.name
 		};
 		parsedFile.modules.push(module);
 
