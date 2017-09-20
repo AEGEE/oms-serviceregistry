@@ -65,7 +65,7 @@ module.exports = function(module, service) {
   }
 
   var query_login = function(error_callback, success_callback) {
-     
+
     request.post({
       url: config.hack.core_url + '/api/login',
       method: 'POST',
@@ -78,6 +78,11 @@ module.exports = function(module, service) {
       if(err) {
         if(config.log_verbose)
           console.log("Could not log into core", err);
+        return error_callback();;
+      }
+      if(!body) {
+        if(config.log_verbose)
+          console.log("No body received from core");
         return error_callback();;
       }
       var token = body.data;
@@ -146,5 +151,5 @@ module.exports = function(module, service) {
   }
 
   rescue();
- 
+
 }
