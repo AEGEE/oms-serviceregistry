@@ -2,5 +2,5 @@
   "docker": "/var/run/docker.sock",
   "log_verbose": true,
   "ping_retries": 60,
-  "ping_delay": 2000,
+  "ping_delay": 2000
 }
