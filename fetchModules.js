@@ -1,6 +1,5 @@
 var request = require('request');
 var config = require('./config.json');
-var register_page = require('./hack.js');
 
 module.exports = function(parsedFile, service, index) {
 	if(!service.modules_url)
@@ -26,17 +25,11 @@ module.exports = function(parsedFile, service, index) {
 			return;
 		}
 
-		module = {
-			pages: body.pages,
-			name: body.name,
-			code: body.code,
-			url: service.frontend_url
-		};
+		module = body;
+		module.url = service.frontend_url;
+		module.servicename = service.name;
 		parsedFile.modules.push(module);
 
 		service.modules = module;
-
-		// TODO remove as soon as hack is unnecessary
-		register_page(module, service);
 	});
 }
